@@ -13,7 +13,6 @@
     <html>
         <head>
             <title>RTMP statistics</title>
-            <style type="text/css">* {font-family: IBM Plex Mono; font-size: 11px;} th, td {padding: 7px;} th {font-weight: 50!important;;} *[bgcolor="#3e455e"], *[bgcolor="#54546b"] { color: white; font-weight: 300; }</style>
         </head>
         <body>
             <xsl:apply-templates select="rtmp"/>
@@ -28,23 +27,29 @@
 </xsl:template>
 
 <xsl:template match="rtmp">
-    <table cellspacing="1" cellpadding="5" style="display: block;">
-        <tbody style="width: 100%; display: table;">
-        <tr style="display: table-row; background-color:#eee;">
-        <td colspan="7" style="text-align: center;"><h1 style="font-size: 24px!important; margin: 0!important;">General Stats</h1></td>
+    <table cellspacing="1" cellpadding="5">
+        <tr bgcolor="#999999">
+            <th>RTMP</th>
+            <th>#clients</th>
+            <th colspan="4">Video</th>
+            <th colspan="4">Audio</th>
+            <th>In bytes</th>
+            <th>Out bytes</th>
+            <th>In bits/s</th>
+            <th>Out bits/s</th>
+            <th>State</th>
+            <th>Time</th>
         </tr>
-        <tr bgcolor="#3e455e" style="display: table-row; font-weight:bold;">
-            <td>RTMP</td>
-            <td>#clients</td>
-            <td>In bytes</td>
-            <td>Out bytes</td>
-            <td>In bits/s</td>
-            <td>Out bits/s</td>
-            <td>Time</td>
-        </tr>
-        <tr style="display: table-row; background: #eee;">
-            <td>Accepted:</td>
-            <td><xsl:value-of select="naccepted"/></td>
+        <tr>
+            <td colspan="2">Accepted: <xsl:value-of select="naccepted"/></td>
+            <th bgcolor="#999999">codec</th>
+            <th bgcolor="#999999">bits/s</th>
+            <th bgcolor="#999999">size</th>
+            <th bgcolor="#999999">fps</th>
+            <th bgcolor="#999999">codec</th>
+            <th bgcolor="#999999">bits/s</th>
+            <th bgcolor="#999999">freq</th>
+            <th bgcolor="#999999">chan</th>
             <td>
                 <xsl:call-template name="showsize">
                     <xsl:with-param name="size" select="bytes_in"/>
@@ -69,13 +74,13 @@
                     <xsl:with-param name="persec" select="1"/>
                 </xsl:call-template>
             </td>
+            <td/>
             <td>
                 <xsl:call-template name="showtime">
                     <xsl:with-param name="time" select="/rtmp/uptime * 1000"/>
                 </xsl:call-template>
             </td>
         </tr>
-        </tbody>
         <xsl:apply-templates select="server"/>
     </table>
 </xsl:template>
@@ -85,54 +90,49 @@
 </xsl:template>
 
 <xsl:template match="application">
-<tr style="height:20px;"></tr>
-    <tr bgcolor="#eee">
-        <td colspan="16" style="text-align: center; padding: 10px;">
-            <b style="font-size: 24px!important; margin: 0!important; color:#000;"><xsl:value-of select="name"/></b>
+    <tr bgcolor="#999999">
+        <td>
+            <b><xsl:value-of select="name"/></b>
         </td>
     </tr>
     <xsl:apply-templates select="live"/>
+    <xsl:apply-templates select="play"/>
 </xsl:template>
 
 <xsl:template match="live">
+    <tr bgcolor="#aaaaaa">
+        <td>
+            <i>live streams</i>
+        </td>
+        <td align="middle">
+            <xsl:value-of select="nclients"/>
+        </td>
+    </tr>
     <xsl:apply-templates select="stream"/>
 </xsl:template>
 
+<xsl:template match="play">
+    <tr bgcolor="#aaaaaa">
+        <td>
+            <i>vod streams</i>
+        </td>
+        <td align="middle">
+            <xsl:value-of select="nclients"/>
+        </td>
+    </tr>
+    <xsl:apply-templates select="stream"/>
+</xsl:template>
 
 <xsl:template match="stream">
-<tr bgcolor="#3e455e" style="font-size: 10px; font-weight: bold!important;">
-        <th>
-            <i style="font-weight: bold!important;">Stream Name</i>
-        </th>
-        <th align="middle" style="font-weight: bold!important;">
-            Clients
-        </th>
-        <th bgcolor="#3e455e" style="font-weight: bold!important;">Video codec</th>
-            <th bgcolor="#3e455e" style="font-weight: bold!important;">bits/s</th>
-            <th bgcolor="#3e455e" style="font-weight: bold!important;">size</th>
-            <th bgcolor="#3e455e" style="font-weight: bold!important;">fps</th>
-            <th bgcolor="#3e455e" style="font-weight: bold!important;">Audio codec</th>
-            <th bgcolor="#3e455e" style="font-weight: bold!important;">bits/s</th>
-            <th bgcolor="#3e455e" style="font-weight: bold!important;">freq</th>
-            <th bgcolor="#3e455e" style="font-weight: bold!important;">chan</th>
-            <th style="font-weight: bold!important;">In bytes</th>
-            <th style="font-weight: bold!important;">Out bytes</th>
-            <th style="font-weight: bold!important;">In bits/s</th>
-            <th style="font-weight: bold!important;">Out bits/s</th>
-            <th style="font-weight: bold!important;">Time</th>
-    </tr>
     <tr valign="top">
         <xsl:attribute name="bgcolor">
             <xsl:choose>
-                <xsl:when test="active">#9494a8</xsl:when>
+                <xsl:when test="active">#cccccc</xsl:when>
                 <xsl:otherwise>#dddddd</xsl:otherwise>
             </xsl:choose>
         </xsl:attribute>
         <td>
             <a href="">
-		<xsl:attribute name="stream-class">
-			<xsl:value-of select="name"/>
-		</xsl:attribute>
                 <xsl:attribute name="onclick">
                     var d=document.getElementById('<xsl:value-of select="../../name"/>-<xsl:value-of select="name"/>');
                     d.style.display=d.style.display=='none'?'':'none';
@@ -201,34 +201,35 @@
                 <xsl:with-param name="persec" select="1"/>
             </xsl:call-template>
         </td>
+        <td><xsl:call-template name="streamstate"/></td>
         <td>
             <xsl:call-template name="showtime">
                <xsl:with-param name="time" select="time"/>
             </xsl:call-template>
         </td>
     </tr>
-    <tr>
+    <tr style="display:none">
         <xsl:attribute name="id">
             <xsl:value-of select="../../name"/>-<xsl:value-of select="name"/>
         </xsl:attribute>
-        <td colspan="16" bgcolor="#eeeeee">
-            <table cellspacing="1" cellpadding="5" style="width: 100%;">
-                <tr bgcolor="#c9c9c9" style="color: #000!important; font-weight: bold!important;">
-                    <th style="color: #000!important; font-weight: bold!important;">Id</th>
-                    <th style="color: #000!important; font-weight: bold!important;">State</th>
-                    <th style="color: #000!important; font-weight: bold!important;">Address</th>
-                    <th style="color: #000!important; font-weight: bold!important;">Page URL</th>
-                    <th style="color: #000!important; font-weight: bold!important;">RTMP URL</th>
-                    <th style="color: #000!important; font-weight: bold!important;">Dropped</th>
-                    <th style="color: #000!important; font-weight: bold!important;">Timestamp</th>
-                    <th style="color: #000!important; font-weight: bold!important;">A-V</th>
-                    <th style="color: #000!important; font-weight: bold!important;">Time</th>
+        <td colspan="16" ngcolor="#eeeeee">
+            <table cellspacing="1" cellpadding="5">
+                <tr>
+                    <th>Id</th>
+                    <th>State</th>
+                    <th>Address</th>
+                    <th>Flash version</th>
+                    <th>Page URL</th>
+                    <th>SWF URL</th>
+                    <th>Dropped</th>
+                    <th>Timestamp</th>
+                    <th>A-V</th>
+                    <th>Time</th>
                 </tr>
                 <xsl:apply-templates select="client"/>
             </table>
         </td>
     </tr>
-    <tr style="height:20px;"></tr>
 </xsl:template>
 
 <xsl:template name="showtime">
@@ -303,7 +304,7 @@
     <tr>
         <xsl:attribute name="bgcolor">
             <xsl:choose>
-                <xsl:when test="publishing">#dbdbdb</xsl:when>
+                <xsl:when test="publishing">#cccccc</xsl:when>
                 <xsl:otherwise>#eeeeee</xsl:otherwise>
             </xsl:choose>
         </xsl:attribute>
@@ -318,15 +319,16 @@
                 <xsl:value-of select="address"/>
             </a>
         </td>
+        <td><xsl:value-of select="flashver"/></td>
         <td>
             <a target="_blank">
                 <xsl:attribute name="href">
-		    https://misconfigured.link/stream.php?stream=<xsl:value-of select="../name"/>
+                    <xsl:value-of select="pageurl"/>
                 </xsl:attribute>
-                <xsl:value-of select="../name"/>
+                <xsl:value-of select="pageurl"/>
             </a>
         </td>
-        <td><xsl:value-of select="swfurl"/>/<xsl:value-of select="../name"/></td>
+        <td><xsl:value-of select="swfurl"/></td>
         <td><xsl:value-of select="dropped"/></td>
         <td><xsl:value-of select="timestamp"/></td>
         <td><xsl:value-of select="avsync"/></td>
