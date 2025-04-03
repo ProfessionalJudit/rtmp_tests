@@ -1,0 +1,22 @@
+NGinx:
+    https://www.digitalocean.com/community/tutorials/how-to-set-up-a-video-streaming-server-using-nginx-rtmp-on-ubuntu-20-04
+    https://nginx.org/en/docs/beginners_guide.html
+    https://docs.nginx.com/nginx/admin-guide/web-server/web-server/
+ffmpeg:
+  	ffmpeg -re -i videos/Template_Video_Moov2.mp4  -c:v copy -c:a aac -ar 44100 -ac 1 -f flv rtmp://localhost/live/stream
+php:
+    https://www.digitalocean.com/community/tutorials/php-fpm-nginx
+    https://stackoverflow.com/questions/29905953/how-to-correctly-link-php-fpm-and-nginx-docker-containers
+    https://medium.com/@nidhinbabukuttan/easy-containerization-with-docker-deploying-a-website-with-nginx-and-php-fpm-3e2c1faa97fd
+express:
+    https://www.digitalocean.com/community/tutorials/php-fpm-nginx
+    https://developer.mozilla.org/en-US/docs/Learn_web_development/Extensions/Server-side/Express_Nodejs/Introduction
+
+
+PORTS
+    - 8090:80       
+    - 1935:1935 
+    - 8088:8088
+    - 8091:8080
+
+
