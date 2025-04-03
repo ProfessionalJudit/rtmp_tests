@@ -2,39 +2,24 @@ version: '3.1'
 
 services:
 #database engine service
-  redis:
-    container_name: redis
-    image: redis:4.0-alpine
-    restart: always
-  transparencia-web:
+  nginx:
     build:
-      context: ./images/web
-      dockerfile: Dockerfile.devel
-    container_name: transparencia-web-devel
-    environment:
-      COMPOSER_AUTH: '{"github-oauth": {"github.com": "${githubtoken}"}}'
-      REDIS_HOST: 'redis'
-      URL_API_WEB_DEVEL: 'https://dev.manresa.cat/api/web_v2'
-      URL_API_WEB_PROD: 'https://web.manresa.cat/api/web_v2'
-      API_ENTORN_DEFAULT: 'local'
-      URL_DOCS_MEDIA: 'https://web.manresa.cat/media/'
-      URL_API_AGENDA_DEVEL: "https://dev.manresa.cat/api/agenda"
-      URL_API_AGENDA_PROD: "https://web.manresa.cat/api/agenda"
-      URL_API_GENERAL_DEVEL: "https://dev.manresa.cat/api/general"
-      URL_API_GENERAL_PROD: "https://web.manresa.cat/api/general"
-      URL_API_NOTICIES_DEVEL: "http://des.manresa.cat/api_noticies/api/noticies/"
-      URL_API_NOTICIES_PROD: "https://www.manresa.cat/api_noticies/api/noticies/"
-      URL_API_PROPOSTESPLE_DEVEL: "https://dev.manresa.cat/api/proposicionsple"
-      URL_API_PROPOSTESPLE_PROD: "https://web.manresa.cat/api/proposicionsple"
-      URL_API_OPINIONSGRUPSPOLITICS_DEVEL: "https://dev.manresa.cat/api/opinionsgrupspolitics"
-      URL_API_OPINIONSGRUPSPOLITICS_PROD: "https://web.manresa.cat/api/opinionsgrupspolitics"
-      URL_API_REGALSOBSEQUIS_DEVEL: "https://dev.manresa.cat/api/regalsobsequis"
-      URL_API_REGALSOBSEQUIS_PROD: "https://web.manresa.cat/api/regalsobsequis"
-    depends_on:
-      - redis
+      context: ./
+      dockerfile: dockerfile.nginx
+    container_name: nginx-rtmp-web
+#    environment:
+#      key: "value"
+    # depends_on:
+    #   - redis
     ports:
-      - 88:80
+      - 8090:80
+      - 1935:1935 
+      - 8088:8088
+      - 8091:8080
     volumes:
       #allow *.sql, *.sql.gz, or *.sh and is execute only if data directory is empty
-      - ./images/web/src/:/var/www/html
-      - ./images/web/src/vendor/ajt/webbase/src/templates/:/var/www/html/templates/default
+      - ./files/index.html:/usr/share/nginx/html/index.html
+      - ./files/stat.xsl:/var/www/html/rtmp/stat.xsl
+      - ./files/nginx.conf:/etc/nginx/nginx.conf
+      - ./files/rtmp:/etc/nginx/sites-available/rtmp
+      # - ./files/php:/var/www/html/rtmp

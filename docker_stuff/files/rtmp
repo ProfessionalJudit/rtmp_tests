@@ -1,22 +1,4 @@
 server {
-    listen 8090;
-    server_name  localhost;
-
-    # rtmp stat
-    location /stat {
-        rtmp_stat all;
-        rtmp_stat_stylesheet stat.xsl;
-    }
-    location /stat.xsl {
-        root /var/www/html/rtmp;
-    }
-
-    # rtmp control
-    location /control {
-        rtmp_control all;
-    }
-}
-server {
     listen 8088;
 
     location / {
@@ -27,4 +9,23 @@ server {
 
 types {
     application/dash+xml mpd;
+}
+
+server {
+    listen 8080;
+    server_name  localhost;
+
+    # rtmp stat
+    location /stat {
+        rtmp_stat all;
+        rtmp_stat_stylesheet /stat.xsl;
+    }
+    location /stat.xsl {
+        root /var/www/html/rtmp;
+    }
+
+    # rtmp control
+    location /control {
+        rtmp_control all;
+    }
 }

@@ -1,0 +1,18 @@
+FROM nginx:latest
+
+RUN apt update
+RUN apt install -y nginx-common
+RUN apt install -y libnginx-mod-rtmp
+RUN apt install -y gzip
+# RUN apt install -y php8.2-fpm
+# RUN groupadd -f -g 111111 wordpress_user
+# RUN useradd -g wordpress_user wordpress_user
+# COPY ./files/pool.d /etc/php/8.2/fpm/pool.d
+# RUN service php8.2-fpm start \
+#     service nginx-debug reload 
+RUN mkdir /var/www/html/rtmp
+RUN ln -s /etc/nginx/sites-available/rtmp /etc/nginx/sites-enabled/rtmp
+RUN mkdir /var/www/html/stream
+RUN service nginx-debug reload
+
+#COPY ./files/index.html /usr/share/nginx/html/index.html
