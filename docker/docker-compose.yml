@@ -28,6 +28,11 @@ services:
       volumes:
         - ../files/src/site/:/var/www/html/wordpress/
   auth_server:
+    environment:
+    - DEBUG=express:*
+    - NODE_DEBUG=cluster,net,http,fs,tls,module,timers
+    depends_on:
+      - mysql
     build:
       context: ./
       dockerfile: dockerfile.express
@@ -38,7 +43,22 @@ services:
       - "3000:3000"
     volumes:
       - ../files/src/express/:/usr/app/src
-
+  mysql:
+    environment:
+      MYSQL_ROOT_PASSWORD:  superrootpass
+      MYSQL_USER: secureuser
+      MYSQL_PASSWORD: securepass
+      MYSQL_DATABASE: spasm
+    container_name: mysql
+    image: mysql:8.1
+    networks:
+    - app-tier
+    ports:
+      - "3307:3306"
+    volumes:
+      - mysql_vol:/var/lib/sql
+volumes:
+  mysql_vol:
 networks:
   app-tier:
     driver: bridge
