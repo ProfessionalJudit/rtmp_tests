@@ -27,11 +27,11 @@ services:
           - ":9000"
       volumes:
         - ../files/src/site/:/var/www/html/wordpress/
-  auth-server:
+  auth_server:
     build:
       context: ./
       dockerfile: dockerfile.express
-    container_name: auth-server
+    container_name: auth_server
     networks:
       - app-tier
     ports:

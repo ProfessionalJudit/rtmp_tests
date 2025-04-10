@@ -1,8 +1,12 @@
 const express = require("express");
 const app = express();
 
-app.get("/", (req, res) => {
-  res.send("Hello from Docker, Is working ?");
+app.use(express.urlencoded({ extended: true }));
+
+app.post("/auth", (req, res) => {
+  //req.body.key
+  res.status(200).send();
+
 });
 
 app.listen(3000, () => {
