@@ -13,6 +13,9 @@ express:
     https://developer.mozilla.org/en-US/docs/Learn_web_development/Extensions/Server-side/Express_Nodejs/Introduction
     https://expressjs.com/en/guide/database-integration.html#mysql
 
+
+curl -X POST -L "location:port"  -H "Content-Type: application/x-www-form-urlencoded"
+
 PORTS
     - 8090:80       
     - 1935:1935 

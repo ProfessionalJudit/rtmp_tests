@@ -2,6 +2,10 @@ version: '3.1'
 
 services:
   nginx:
+    depends_on:
+      mysql:
+        condition: service_healthy
+        restart: true
     networks:
       - app-tier
     build:
@@ -32,7 +36,9 @@ services:
     - DEBUG=express:*
     - NODE_DEBUG=cluster,net,http,fs,tls,module,timers
     depends_on:
-      - mysql
+      mysql:
+        condition: service_healthy
+        restart: true
     build:
       context: ./
       dockerfile: dockerfile.express
@@ -57,6 +63,13 @@ services:
       - "3307:3306"
     volumes:
       - mysql_vol:/var/lib/sql
+      - "./config/db/init.sql:/docker-entrypoint-initdb.d/1.sql"
+    healthcheck:
+        test: mysql --user=root --password=superrootpass --execute="SHOW DATABASES";
+        interval: 5s
+        retries: 5
+        timeout: 10s
+
 volumes:
   mysql_vol:
 networks:

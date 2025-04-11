@@ -2,10 +2,12 @@ FROM node:23-alpine
 
 
 WORKDIR /usr/app
+ENV NPM_CONFIG_LOGLEVEL info
 COPY ./config/express/* /usr/app/
 RUN npm install
-RUN npm install mysql
+RUN npm install mysql2
 RUN npm install debug
+RUN apk add busybox-extras
 
 # Default command
 CMD ["npm", "start"]
