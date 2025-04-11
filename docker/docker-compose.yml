@@ -67,7 +67,7 @@ services:
     healthcheck:
         test: mysql --user=root --password=superrootpass --execute="SHOW DATABASES";
         interval: 5s
-        retries: 5
+        retries: 10
         timeout: 10s
 
 volumes:
