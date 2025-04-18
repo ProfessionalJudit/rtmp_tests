@@ -14,4 +14,5 @@ ALTER USER 'secureuser'@'%' IDENTIFIED WITH mysql_native_password BY 'securepass
 
 FLUSH PRIVILEGES;
 
-INSERT INTO Users VALUES (0,'Root','rootpass','This is the start of all things','rooturl','rootpass');
+INSERT INTO Users (username,password,chanel_description,token_1,token_2) VALUES ('Root','rootpass','This is the start of all things','rootkey','rootpass');
+INSERT INTO Users (username,password,chanel_description,token_1,token_2) VALUES ('Notroot','notrootpass','This is the the annoying little brother','notrootkey','notrootpass');

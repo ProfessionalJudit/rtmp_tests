@@ -1,1 +1,41 @@
-echo "<?php echo phpinfo();?>"
+<?php
+// echo phpinfo();
+
+
+$request = parse_url($_SERVER["REQUEST_URI"], PHP_URL_PATH);
+$params_get = $_GET;
+$params_post = $_POST;
+//setcookie('debug', '1', time() + (86400 * 30)); // 86400 = seconds in 1 day
+$debug = ($_COOKIE['debug']==1);
+if ($debug) {
+    echo("Debug activated");
+}
+switch ($request) {
+    case '/chanel':
+        $chanel = ''.$params_get['name'];
+        $url = "auth_server:3000/getchanel";
+        $curl = curl_init();
+        curl_setopt($curl,CURLOPT_URL,$url);
+        curl_setopt($curl,CURLOPT_RETURNTRANSFER,true);
+        curl_setopt($curl,CURLOPT_POSTFIELDS,"name=$chanel");
+        $chanel_data = curl_exec($curl);
+        $chanel_data_json = json_decode($chanel_data,true);
+        if ($debug) {
+            echo ('<br>Chanel Data:'.$chanel_data."<br>");
+        }
+        if ($chanel_data_json["Found"] == "True") {
+            include 'chanel.php';
+        }else{
+            include '404.php';
+        }
+        break;
+
+    case '/search':
+        include 'default.php';
+        break;
+
+    case '':
+    case '/':
+        include 'default.php';
+        break;
+}

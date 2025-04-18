@@ -18,12 +18,15 @@ services:
       - 8088:8088
       - 8091:8080
     volumes:
+      - ../files/src/media/:/var/www/html/media/
       - ../files/config/nginx/index.html:/usr/share/nginx/html/index.html
       - ../files/config/nginx/stat.xsl:/var/www/html/rtmp/stat.xsl
       - ../files/config/nginx/nginx.conf:/etc/nginx/nginx.conf
       - ../files/config/nginx/rtmp:/etc/nginx/sites-available/rtmp
   fpm:
-      image: php:fpm
+      build:
+        context: ./
+        dockerfile: dockerfile.fpm
       container_name: fpm
       networks:
       - app-tier

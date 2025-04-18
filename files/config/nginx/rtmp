@@ -18,7 +18,7 @@ server {
     # rtmp stat
     location /stat {
         rtmp_stat all;
-        rtmp_stat_stylesheet /stat.xsl;
+        rtmp_stat_stylesheet stat.xsl;
     }
     location /stat.xsl {
         root /var/www/html/rtmp;
