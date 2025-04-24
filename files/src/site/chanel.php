@@ -20,7 +20,14 @@
         <nav>
             <div class="nav-wrapper deep-purple">
                 <a href="#" class="brand-logo">SPASM</a>
-                <a class="right waves-effect waves-light profileimg" href="#"><img src="/media/img/pholder_person.png" class="navimg circle"/></a>
+                <div class="input-field searchbar">
+                    <form action="/search" method="GET">
+                        <i class="material-icons prefix">search</i>
+                        <input class="validate searchbar_t" placeholder="Search..." id="search" name="search" type="text">
+                        <input type="submit" value="Submit" hidden>
+                    </form>
+                </div>
+                <?php echo '<a class="right waves-effect waves-light profileimg" href="#"><img src="/media/chanels-img/'.$chanel_data_json["img2"].'" class="navimg circle"/></a> '?>
             </div>
         </nav>
         <div class="mainbody deep-purple lighten-1 valign-wrapper">
@@ -28,7 +35,7 @@
             <?php 
                 $output = array();
                 $reurn_err = '';
-                exec("ffmpeg -i http://nginx-rtmp-web:8088/dash/Root.mpd stdout -v 16 2>&1",$output,$reurn_err);
+                exec("ffmpeg -i http://nginx-rtmp-web:8088/dash/".$chanel.".mpd stdout -v 16 2>&1",$output,$reurn_err);
                 //echo('Stream down: '.str_contains($output[0],'404'));
                 if (!str_contains($output[0],'404')) 
                 {
@@ -46,7 +53,7 @@
                             const player = videojs(video)
                             player.src({
                             //src: src,
-                                src:'http://localhost:8088/dash/Root.mpd',
+                                src:'http://localhost:8088/dash/".$chanel.".mpd',
                                 type: 'application/dash+xml'
                             })
                             //type='application/dash+xml'
@@ -54,13 +61,13 @@
                             //Auth    
                         </script>"
                         .'<div class="banner center-align ">
-                            <img class="banner_i circle " src="/media/img/pholder_img.jpeg">
+                            <img class="banner_i circle " src="/media/chanels-img/'.$chanel_data_json["img1"].'">
                             <p class="banner_p left-align">'.$chanel_data_json["Desc"].'</p>
                         </div>';
                 }else{
                     echo '<div class="valign-wrapper"><p class="offlinep center-align">STREAM OFFLINE <3</p></div>'. 
                         '<div class="banner center-align rounded">
-                            <img class="banner_i circle " src="/media/img/pholder_img.jpeg">
+                            <img class="banner_i circle " src="/media/chanels-img/'.$chanel_data_json["img1"].'">
                             <p class="banner_p left-align">'.$chanel_data_json["Desc"].'</p>
                         </div>';
                 }

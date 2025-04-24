@@ -25,17 +25,17 @@ nav{
 }
 .brand-logo{
     text-shadow: 
-     -1px -1px pink,
-     1px -1px pink,
-     1px 1px pink,
-     2px 1px pink,
-     2px 2px pink,
-     3px 2px pink,
-     3px 3px pink,
-     4px 3px pink,
-     4px 4px pink,
-     5px 4px pink,
-     5px 5px pink;
+    -1px -1px pink,
+    1px -1px pink,
+    1px 1px pink,
+    2px 1px pink,
+    2px 2px pink,
+    3px 2px pink,
+    3px 3px pink,
+    4px 3px pink,
+    4px 4px pink,
+    5px 4px pink,
+    5px 5px pink;
     margin-left: 25px;
     line-height: 7vh !important;
     font-size: 6vh !important;
@@ -98,4 +98,28 @@ nav{
 
 .rounded{
     border-radius: 2em;
+}
+
+.searchbar{
+    width: 30%;
+    margin-left: 35% !important;
+    display: inline-block;
+}
+
+.searchbar_t{
+    background-color: #ffffffc7 !important;
+    padding: 2px !important;
+    padding-left: 2vh !important;
+    margin-top: 1.5vh !important;
+    border-radius: 20px !important;
+}
+::placeholder{
+    color: black;
+}
+input[type=text]:not(.browser-default):focus:not([readonly]){
+    box-shadow: none !important;
+    border-bottom: none !important;
+}
+.input-field .prefix.active {
+    color: #ffffff;
 }

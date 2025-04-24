@@ -5,6 +5,7 @@
 $request = parse_url($_SERVER["REQUEST_URI"], PHP_URL_PATH);
 $params_get = $_GET;
 $params_post = $_POST;
+
 //setcookie('debug', '1', time() + (86400 * 30)); // 86400 = seconds in 1 day
 $debug = ($_COOKIE['debug']==1);
 if ($debug) {
@@ -31,6 +32,23 @@ switch ($request) {
         break;
 
     case '/search':
+        $params = "";
+        if (isset($params_get['search'])) {
+            $params = "".$params_get['search'];
+        }else{
+            $params = "";
+
+        }
+        $url = "auth_server:3000/search";
+        $curl = curl_init();
+        curl_setopt($curl,CURLOPT_URL,$url);
+        curl_setopt($curl,CURLOPT_RETURNTRANSFER,true);
+        curl_setopt($curl,CURLOPT_POSTFIELDS,"params=$params");
+        $results = curl_exec($curl);
+        $results_json = json_decode($results,true);
+        foreach ($results_json["Found"] as $value) {
+            //echo($value."<br>");
+        }
         include 'default.php';
         break;
 

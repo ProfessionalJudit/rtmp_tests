@@ -13,15 +13,15 @@ app.post("/auth", (req, res) => {
     password: 'securepass',
     database: 'spasm',
     port: 3306
-  })  
+  })
   //req.body.key
   console.log("Auth on: " + req.path);
   var found = false
   connection.connect()
   connection.query('SELECT username,token_1,token_2 from Users', (err, rows) => {
-    console.log("Log "+JSON.stringify(rows))
+    console.log("Log " + JSON.stringify(rows))
     console.log(req.body)
-    console.log("Log "+err)
+    console.log("Log " + err)
     console.log("Checks: ")
     rows.forEach(row => {
       console.log(req.body.name == row.username)
@@ -30,14 +30,14 @@ app.post("/auth", (req, res) => {
       console.log(req.body.key + " " + row.token_1)
       console.log(req.body.pass == row.token_2)
       console.log(req.body.pass + " " + row.token_2)
-      if (req.body.name == row.username && req.body.key == row.token_1 && req.body.pass == row.token_2) {        
+      if (req.body.name == row.username && req.body.key == row.token_1 && req.body.pass == row.token_2) {
         console.log("FOUDN!")
         console.log(found)
         found = true
         console.log(found)
       }
     });
-    if (err){ 
+    if (err) {
       res.status(403).send();
     }
     if (found) {
@@ -45,14 +45,14 @@ app.post("/auth", (req, res) => {
       res.status(200).send();
 
       console.log(found)
-    }else{
+    } else {
       console.log("Not Allowed")
       console.log(found)
       res.status(403).send();
     }
     console.log("Conection closed")
   })
-  connection.end()  
+  connection.end()
 });
 
 app.post("/getchanel", (req, res) => {
@@ -62,27 +62,34 @@ app.post("/getchanel", (req, res) => {
     password: 'securepass',
     database: 'spasm',
     port: 3306
-  })  
+  })
   var found = false
   var chanel = req.body.name
   var chanel_description = ""
+  var img1 = ""
+  var img2 = ""
   console.log(req.body)
   connection.connect()
-  connection.query('SELECT username,chanel_description from Users', (err, rows) => {
-    rows.forEach(row => {  
-      if (chanel == row.username) {        
+  connection.query('SELECT username,chanel_description,imgname ,smallimgname from Users, Extra WHERE Users.uid = Extra.chanelid', (err, rows) => {
+    rows.forEach(row => {
+      if (chanel == row.username) {
         found = true;
         chanel_description = row.chanel_description;
+        img1 = row.imgname;
+        img2 = row.smallimgname;
+
       }
     });
     if (found) {
       const response = {
         "Found": "True",
         "Param": chanel,
-        "Desc": chanel_description
+        "Desc": chanel_description,
+        "img1": img1,
+        "img2": img2
       };
       res.send(response);
-    }else{
+    } else {
       const response = {
         "Found": "False",
         "Param": chanel
@@ -90,10 +97,40 @@ app.post("/getchanel", (req, res) => {
       res.send(response);
     }
   });
-  connection.end()  
+  connection.end()
 });
 //curl -X POST "localhost:3000/getchanel" --data "name=Root"
 
+app.post("/search", (req, res) => {
+  const connection = mysql.createConnection({
+    host: 'mysql',
+    user: 'secureuser',
+    password: 'securepass',
+    database: 'spasm',
+    port: 3306
+  })
+  var found = []
+  var params = req.body.params
+  if (params == null) {
+    params = "";
+  }
+  console.log(req.body)
+  console.log("WAH! "+ 'SELECT username FROM Users where LOCATE("'+params+'",username) > 0');
+  connection.connect()
+  connection.query('SELECT username FROM Users where LOCATE("'+params+'",username) > 0', (err, rows) => {
+    if (rows) {
+      rows.forEach(row => {
+        found.push(row.username);
+      });
+    }
+    const response = {
+      "Found": found,
+      "Param": params
+    };
+    res.send(response);
+  });
+  connection.end()
+});
 
 
 app.listen(3000, () => {

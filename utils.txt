@@ -24,7 +24,6 @@ PORTS
 
 
 TODO: 
-    - Load chanel images from database
     - Search bar and results
     - Login and register
     - Profile page
