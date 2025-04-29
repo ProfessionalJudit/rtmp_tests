@@ -40,39 +40,34 @@
                         <input type="submit" value="Submit" hidden>
                     </form>
                 </div>
-                <?php 
-                    include("menu_icon.php");
-
-                ?>
             </div>
         </nav>
         <div class="mainbody deep-purple lighten-1 valign-wrapper">
-            <div class="cards_container">
-                <?php
-                foreach ($results_json['Found'] as $key => $value) {
-                    $chanel = $value;
-                    $url = "auth_server:3000/getchanel";
-                    $curl = curl_init();
-                    curl_setopt($curl,CURLOPT_URL,$url);
-                    curl_setopt($curl,CURLOPT_RETURNTRANSFER,true);
-                    curl_setopt($curl,CURLOPT_POSTFIELDS,"name=$chanel");
-                    $chanel_data = curl_exec($curl);
-                    $chanel_data_json = json_decode($chanel_data,true);
-                    echo '
-                        <a href="/chanel?name='.$value.'">
-                            <div class="card">
-                                <div class="card-image">
-                                    <img src="/media/chanels-img/'.$chanel_data_json['img1'].'">
-                                    <span class="card-title">'.$value.'</span>
-                                </div>
-                                <div class="card-content">
-                                    <p>'.$chanel_data_json['Desc'].'</p>
-                                </div>
-                        </div>
-                    </a>';
-                }
-                ?>
+            <div class="formscotnainer">
+                <div class="valign">
+                    <h4 class="fancytext">LOGIN</h4>
+                    <div class="form_login">
+                        <form action="/loginloc" method="POST">
+                            <input class="validate" placeholder="Username" id="user" name="user" type="text">
+                            <input class="validate" placeholder="Password" id="pass" name="pass" type="password">
+                            <input class="validate hide_f" placeholder="e" id="e" name="e" type="text" disabled>
+                            <input class="logbutton waves-effect waves-light btn" type="submit" value="Login">
+                        </form>
+                    </div>
+                </div>
+                <div class="valign">
+                    <h4 class="fancytext">REGISTER</h4>
+                    <div class="form_login">
+                        <form action="/registerloc" method="POST">
+                            <input class="validate" placeholder="Username" id="user" name="user" type="text">
+                            <input class="validate" placeholder="Password" id="pass" name="pass" type="password">
+                            <input class="validate" placeholder="E-Mail" id="mail" name="mail" type="text">
+                            <input class="logbutton waves-effect waves-light btn" type="submit" value="Register">
+                        </form>
+                    </div>
+                </div>
             </div>
         </div>
+    </div>
     </div>
 </body>

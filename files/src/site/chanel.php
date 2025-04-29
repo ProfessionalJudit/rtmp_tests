@@ -19,15 +19,18 @@
     <div class="root">
         <nav>
             <div class="nav-wrapper deep-purple">
-                <a href="#" class="brand-logo">SPASM</a>
-                <div class="input-field searchbar">
+            <a href="search?search=#" class="brand-logo">SPASM</a>
+            <div class="input-field searchbar">
                     <form action="/search" method="GET">
                         <i class="material-icons prefix">search</i>
                         <input class="validate searchbar_t" placeholder="Search..." id="search" name="search" type="text">
                         <input type="submit" value="Submit" hidden>
                     </form>
                 </div>
-                <?php echo '<a class="right waves-effect waves-light profileimg" href="#"><img src="/media/chanels-img/'.$chanel_data_json["img2"].'" class="navimg circle"/></a> '?>
+                <?php 
+                    include("menu_icon.php");
+
+                ?>
             </div>
         </nav>
         <div class="mainbody deep-purple lighten-1 valign-wrapper">

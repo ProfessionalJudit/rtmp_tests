@@ -51,6 +51,9 @@ switch ($request) {
         }
         include 'default.php';
         break;
+    case '/login':
+        include 'login.php';
+        break;
 
     case '':
     case '/':
