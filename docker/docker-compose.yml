@@ -33,6 +33,7 @@ services:
       ports:
           - ":9000"
       volumes:
+        - ../files/src/media/:/media/
         - ../files/src/site/:/var/www/html/wordpress/
   auth_server:
     environment:
@@ -70,7 +71,7 @@ services:
     healthcheck:
         test: mysql --user=root --password=superrootpass --execute="SHOW DATABASES";
         interval: 5s
-        retries: 10
+        retries: 15
         timeout: 10s
 
 volumes:

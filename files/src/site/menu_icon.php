@@ -8,8 +8,7 @@ if (isset($_SESSION['user'])) {
     curl_setopt($curl,CURLOPT_POSTFIELDS,"name=".$_SESSION['user']);
     $chanel_data = curl_exec($curl);
     $chanel_data_json = json_decode($chanel_data,true);
-
-    echo '<a class="right waves-effect waves-light profileimg" href="#"><img src="/media/chanels-img/'.$chanel_data_json["img1"].'" class="navimg circle"/></a> ';
+    echo '<a class="right waves-effect waves-light profileimg" href="/profile"><img src="/media/chanels-img/'.$chanel_data_json["img2"].'" class="navimg circle"/></a> ';
 }else{
     echo '<a class="right waves-effect waves-light profileimg" href="/login"><img src="/media/chanels-img/'.'pholder_person.png'.'" class="navimg circle"/></a> ';
 }

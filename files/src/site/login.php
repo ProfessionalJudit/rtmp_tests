@@ -50,18 +50,24 @@
                         <form action="/loginloc" method="POST" id="loginform">
                             <input class="validate" placeholder="Username" id="user" name="user" type="text">
                             <input class="validate" placeholder="Password" id="pass" name="pass" type="password">
-                            <input form="loginform"  class="logbutton waves-effect waves-light btn" type="submit" value="Login">
+                            <input type="submit" hidden>
+
+                            <button form="loginform"  class="logbutton waves-effect waves-light btn" type="submit">Login</button>
                         </form>
                     </div>
                 </div>
                 <div class="valign">
                     <h4 class="fancytext">REGISTER</h4>
-                    <div class="form_login">
-                        <form action="/registerloc" method="POST">
-                            <input class="validate" placeholder="Username" id="user" name="user" type="text">
-                            <input class="validate" placeholder="Password" id="pass" name="pass" type="password">
-                            <input class="validate" placeholder="E-Mail" id="mail" name="mail" type="text">
-                            <input class="logbutton waves-effect waves-light btn" type="submit" value="Register">
+                    <div class="form_login form_res">
+                        <form action="/registerloc" method="POST" enctype="multipart/form-data">
+                            <input class="validate" placeholder="Username" minlength="4" id="user" name="user" type="text" required>
+                            <input class="validate" placeholder="Description" id="desc" name="desc" type="textarea"required>
+                            <input class="validate" placeholder="Password" id="pass" minlength="6" name="pass" type="password"required>
+                            <input class="validate" placeholder="E-Mail" id="mail" name="mail" type="text"required>
+                            <input type="file" id="img1" name="img1">
+                            <input type="file" id="img2" name="img2">
+                            <input type="submit" hidden>
+                            <button class="logbutton waves-effect waves-light btn" type="submit">Register</button>
                         </form>
                     </div>
                 </div>

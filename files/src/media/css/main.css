@@ -181,6 +181,7 @@ input[type=text]:not(.browser-default):focus:not([readonly]){
 .logbutton{
     background-color: #7e57c2 !important;
     justify-self: flex-end;
+    color: white !important;
 }
 
 .logbutton input{
@@ -205,4 +206,35 @@ input[type=text]:not(.browser-default):focus:not([readonly]){
 
 .hide_f{
     opacity: 0;
+}
+
+.data-edit{
+    background-color: rgba(255, 255, 255, 0.692);
+    border-radius: 10px;
+    width: 30%;
+    margin-left: 35%;
+    border: 1px black solid;
+    padding: 5px;
+}
+.data-edit form{
+    display: flex;
+    flex-direction: column;
+}
+
+.data-edit input{
+    margin-bottom: 10px;
+}
+.form_res input{
+    margin-bottom: 10px;
+}
+
+.data-edit .texta{
+    border-radius: 5px;
+    width: 100%;
+    padding: 12px 20px;
+    box-sizing: border-box;
+    border-radius: 4px;
+    font-size: 16px;
+    resize: none;
+
 }

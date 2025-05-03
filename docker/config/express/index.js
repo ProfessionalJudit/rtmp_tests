@@ -72,12 +72,13 @@ app.post("/getchanel", (req, res) => {
   connection.connect()
   connection.query('SELECT username,chanel_description,imgname ,smallimgname from Users, Extra WHERE Users.uid = Extra.chanelid', (err, rows) => {
     rows.forEach(row => {
+      console.log("JUDITOSEARCH. " +chanel + " : "+ row.username)
       if (chanel == row.username) {
         found = true;
         chanel_description = row.chanel_description;
         img1 = row.imgname;
         img2 = row.smallimgname;
-
+        
       }
     });
     if (found) {
@@ -101,6 +102,63 @@ app.post("/getchanel", (req, res) => {
 });
 //curl -X POST "localhost:3000/getchanel" --data "name=Root"
 
+app.post("/getfull", (req, res) => {
+  const connection = mysql.createConnection({
+    host: 'mysql',
+    user: 'secureuser',
+    password: 'securepass',
+    database: 'spasm',
+    port: 3306
+  })
+  var found = false
+  var chanel = req.body.name
+  var chanel_description = ""
+  var img1 = ""
+  var img2 = ""
+  var token1 = ""
+  var token2 = ""
+  var email = ""
+
+  console.log(req.body)
+  connection.connect()
+  connection.query('SELECT username,chanel_description,token_1,token_2,email,imgname,smallimgname from Users, Extra WHERE Users.uid = Extra.chanelid', (err, rows) => {
+    rows.forEach(row => {
+      if (chanel == row.username) {
+        found = true;
+        chanel_description = row.chanel_description;
+        img1 = row.imgname;
+        token1 = row.token_1;
+        token2 = row.token_2;
+        email = row.email;
+
+      }
+    });
+    if (found) {
+      const response = {
+        "Found": "True",
+        "chanel": chanel,
+        "Desc": chanel_description,
+        "img1": img1,
+        "img2": img2,
+        "token1": token1,
+        "token2": token2,
+        "email": email
+
+      };
+      res.send(response);
+    } else {
+      const response = {
+        "Found": "False",
+        "Param": chanel
+      };
+      res.send(response);
+    }
+  });
+  connection.end()
+});
+//curl -X POST "localhost:3000/getchanel" --data "name=Root"
+
+
 app.post("/search", (req, res) => {
   const connection = mysql.createConnection({
     host: 'mysql',
@@ -115,9 +173,9 @@ app.post("/search", (req, res) => {
     params = "";
   }
   console.log(req.body)
-  console.log("WAH! "+ 'SELECT username FROM Users where LOCATE("'+params+'",username) > 0');
+  console.log("WAH! " + 'SELECT username FROM Users where LOCATE("' + params + '",username) > 0');
   connection.connect()
-  connection.query('SELECT username FROM Users where LOCATE("'+params+'",username) > 0', (err, rows) => {
+  connection.query('SELECT username FROM Users where LOCATE("' + params + '",username) > 0', (err, rows) => {
     if (rows) {
       rows.forEach(row => {
         found.push(row.username);
@@ -151,7 +209,7 @@ app.post("/canlogin", (req, res) => {
   var pass = req.body.pass
   console.log(req.body.user)
   console.log(req.body.pass)
-  
+
   connection.connect()
   connection.query('SELECT username,password from Users', (err, rows) => {
     rows.forEach(row => {
@@ -175,7 +233,94 @@ app.post("/canlogin", (req, res) => {
   });
   connection.end()
 });
+app.post("/change", (req, res) => {
+  const connection = mysql.createConnection({
+    host: 'mysql',
+    user: 'secureuser',
+    password: 'securepass',
+    database: 'spasm',
+    port: 3306
+  })
+  console.log(req.body);
 
+  var user = req.body.user
+  var desc = req.body.desc
+  var img1 = req.body.img1
+  var img2 = req.body.img2
+  console.log('UPDATE Users SET chanel_description = "' + desc + '" WHERE username LIKE "' + user + '"')
+  connection.query('UPDATE Users SET chanel_description = "' + desc + '" WHERE username LIKE "' + user + '"', (err, res) => {
+    console.log(res.affectedRows + " record(s) updated");
+
+  });
+  connection.connect()
+  if (req.body.img1 != 'NOCHANGE') {
+    connection.query('UPDATE Extra, Users SET imgname = "' + img1 + '" WHERE Users.uid = Extra.chanelid and username LIKE "' + user + '"', (err, res) => {
+      console.log(res.affectedRows + " record(s) updated");
+
+    });
+  }
+
+  if (req.body.img2 != 'NOCHANGE') {
+    connection.query('UPDATE Extra, Users SET smallimgname = "' + img2 + '" WHERE Users.uid = Extra.chanelid and username LIKE "' + user + '"', (err, res) => {
+      console.log(res.affectedRows + " record(s) updated");
+
+    });
+  }
+  connection.end()
+  res.status(200).send();
+});
+
+app.post("/createaccount", (req, res) => {
+  const connection = mysql.createConnection({
+    host: 'mysql',
+    user: 'secureuser',
+    password: 'securepass',
+    database: 'spasm',
+    port: 3306
+  })
+  console.log("убите мне");
+  console.log(req.body);
+
+  var user = req.body.user
+  var desc = req.body.desc
+  var pass = req.body.pass
+  var mail = req.body.mail
+  var img1 = req.body.img1
+  var img2 = req.body.img2
+  var token1 = ""
+  var token2 = ""
+  const chars = "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789";
+  for (let i = 0; i < 16; i++) {
+    token1 += chars.charAt(Math.floor(Math.random() * chars.length));
+    token2 += chars.charAt(Math.floor(Math.random() * chars.length));
+
+  }
+
+  const response = {
+    "wdwwddw": "faldwdwse",
+    "user": user,
+    "desc": desc,
+    "pass": pass,
+    "mail": mail,
+    "img1": img1,
+    "img2": img2
+
+  };
+  connection.connect()
+  // console.log("INSERT INTO Users (username,password,email,chanel_description,token_1,token_2)" +
+  //    "VALUES ('" + user + "','" + pass + "','" + mail + "','" + desc + "','" + token1 + "','" + token2 + "')")
+  
+  connection.query("INSERT INTO Users (username,password,email,chanel_description,token_1,token_2)" +
+     "VALUES ('" + user + "','" + pass + "','" + mail + "','" + desc + "','" + token1 + "','" + token2 + "')", (err, res) => {
+  });
+  connection.query('INSERT INTO Extra (chanelid,imgname,smallimgname) VALUES ((SELECT COUNT(*) FROM Users),"' + 
+    img1 + '","' + img2 + '")', (err, res) => {
+    console.log(err)
+  });
+  connection.end()
+  res.send(response);
+
+});
 // {
 //   app: 'live',
 //   flashver: 'FMLE/3.0 (compatible; FMSc/1.0)',

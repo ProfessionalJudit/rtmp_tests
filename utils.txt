@@ -25,4 +25,3 @@ PORTS
 
 TODO: 
     - Login and register
-    - Profile page
