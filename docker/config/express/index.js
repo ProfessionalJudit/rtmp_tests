@@ -138,6 +138,43 @@ app.listen(3000, () => {
 
 });
 
+app.post("/canlogin", (req, res) => {
+  const connection = mysql.createConnection({
+    host: 'mysql',
+    user: 'secureuser',
+    password: 'securepass',
+    database: 'spasm',
+    port: 3306
+  })
+  var allowed = false
+  var user = req.body.user
+  var pass = req.body.pass
+  console.log(req.body.user)
+  console.log(req.body.pass)
+  
+  connection.connect()
+  connection.query('SELECT username,password from Users', (err, rows) => {
+    rows.forEach(row => {
+      console.log(row.username)
+      console.log(row.password)
+      if (user == row.username && pass == row.password) {
+        allowed = true;
+      }
+    });
+    if (allowed) {
+      const response = {
+        "allowed": "true"
+      };
+      res.send(response);
+    } else {
+      const response = {
+        "allowed": "false"
+      };
+      res.send(response);
+    }
+  });
+  connection.end()
+});
 
 // {
 //   app: 'live',

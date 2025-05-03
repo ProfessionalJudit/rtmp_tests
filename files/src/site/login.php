@@ -47,11 +47,10 @@
                 <div class="valign">
                     <h4 class="fancytext">LOGIN</h4>
                     <div class="form_login">
-                        <form action="/loginloc" method="POST">
+                        <form action="/loginloc" method="POST" id="loginform">
                             <input class="validate" placeholder="Username" id="user" name="user" type="text">
                             <input class="validate" placeholder="Password" id="pass" name="pass" type="password">
-                            <input class="validate hide_f" placeholder="e" id="e" name="e" type="text" disabled>
-                            <input class="logbutton waves-effect waves-light btn" type="submit" value="Login">
+                            <input form="loginform"  class="logbutton waves-effect waves-light btn" type="submit" value="Login">
                         </form>
                     </div>
                 </div>
