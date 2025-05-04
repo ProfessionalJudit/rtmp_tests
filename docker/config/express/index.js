@@ -5,7 +5,6 @@ app.use(express.urlencoded({ extended: true }));
 
 const mysql = require('mysql2')
 
-//FIX ERROR: CANT ADD COMMAND WHEN CONECTION IS IN CLOSED STATE
 app.post("/auth", (req, res) => {
   const connection = mysql.createConnection({
     host: 'mysql',

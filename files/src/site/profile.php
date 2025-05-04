@@ -64,7 +64,8 @@
                 <input type="textarea" id="desc" name="desc" class="texta" value=<?php echo "'".$fullchanel["Desc"]."'"?>>
                 <input type="file" id="img1" name="img1">
                 <input type="file" id="img2" name="img2">
-                <input type="submit" value="Save" class="logbutton waves-effect waves-light btn">
+                <input type="submit" hidden>
+                <button class="logbutton waves-effect waves-light btn" type="submit">Save</button>
                 </form>
             </div>
         </div>

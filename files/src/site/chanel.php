@@ -64,14 +64,14 @@
                             //Auth    
                         </script>"
                         .'<div class="banner center-align ">
-                            <img class="banner_i circle " src="/media/chanels-img/'.$chanel_data_json["img1"].'">
-                            <p class="banner_p left-align">'.$chanel_data_json["Desc"].'</p>
+                            <img class="banner_i circle " src="/media/chanels-img/'.$chanel_data_jsonc["img1"].'">
+                            <p class="banner_p left-align">'.$chanel_data_jsonc["Desc"].'</p>
                         </div>';
                 }else{
                     echo '<div class="valign-wrapper"><p class="offlinep center-align">STREAM OFFLINE <3</p></div>'. 
                         '<div class="banner center-align rounded">
-                            <img class="banner_i circle " src="/media/chanels-img/'.$chanel_data_json["img1"].'">
-                            <p class="banner_p left-align">'.$chanel_data_json["Desc"].'</p>
+                            <img class="banner_i circle " src="/media/chanels-img/'.$chanel_data_jsonc["img1"].'">
+                            <p class="banner_p left-align">'.$chanel_data_jsonc["Desc"].'</p>
                         </div>';
                 }
             ?>    

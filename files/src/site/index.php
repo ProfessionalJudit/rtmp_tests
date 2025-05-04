@@ -6,7 +6,7 @@ $request = parse_url($_SERVER["REQUEST_URI"], PHP_URL_PATH);
 $params_get = $_GET;
 $params_post = $_POST;
 session_start();
-
+$debug = false;
 //setcookie('debug', '1', time() + (86400 * 30)); // 86400 = seconds in 1 day
 // $debug = ($_COOKIE['debug']==1);
 // if ($debug) {
@@ -20,12 +20,12 @@ switch ($request) {
         curl_setopt($curl, CURLOPT_URL, $url);
         curl_setopt($curl, CURLOPT_RETURNTRANSFER, true);
         curl_setopt($curl, CURLOPT_POSTFIELDS, "name=$chanel");
-        $chanel_data = curl_exec($curl);
-        $chanel_data_json = json_decode($chanel_data, true);
+        $chanel_datac = curl_exec($curl);
+        $chanel_data_jsonc = json_decode($chanel_datac, true);
         if ($debug) {
-            echo ('<br>Chanel Data:' . $chanel_data . "<br>");
+            echo ('<br>Chanel Data:' . $chanel_datac . "<br>");
         }
-        if ($chanel_data_json["Found"] == "True") {
+        if ($chanel_data_jsonc["Found"] == "True") {
             include 'chanel.php';
         } else {
             include '404.php';
@@ -142,7 +142,7 @@ switch ($request) {
             $chanel_data2 = curl_exec($curl2);
             $chanel_data_json2 = json_decode($chanel_data2, true);
 //            var_dump($chanel_data_json2);
-            echo ("<script>location.href = '/profile'</script>");
+            echo ("<script>location.href = '/'</script>");
 
             
         }

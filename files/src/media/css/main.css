@@ -54,7 +54,7 @@ nav{
 }
 .mainbody .video-js, .offlinep{
     width: 60%;
-    height: 70%;
+    height: 60vh;
 }
 .offlinep{
     height: 5%;
