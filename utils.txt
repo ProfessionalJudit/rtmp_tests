@@ -8,10 +8,13 @@ php:
     https://www.digitalocean.com/community/tutorials/php-fpm-nginx
     https://stackoverflow.com/questions/29905953/how-to-correctly-link-php-fpm-and-nginx-docker-containers
     https://medium.com/@nidhinbabukuttan/easy-containerization-with-docker-deploying-a-website-with-nginx-and-php-fpm-3e2c1faa97fd
+    https://stackoverflow.com/questions/19817401/php-send-curl-request-and-wait-for-the-response
 express:
     https://www.digitalocean.com/community/tutorials/php-fpm-nginx
     https://developer.mozilla.org/en-US/docs/Learn_web_development/Extensions/Server-side/Express_Nodejs/Introduction
     https://expressjs.com/en/guide/database-integration.html#mysql
+
+curl -X POST -L "location:port"  -H "Content-Type: application/x-www-form-urlencoded"
 
 PORTS
     - 8090:80       
@@ -20,3 +23,5 @@ PORTS
     - 8091:8080
 
 
+TODO: 
+    - Login and register

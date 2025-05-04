@@ -2,6 +2,10 @@ version: '3.1'
 
 services:
   nginx:
+    depends_on:
+      mysql:
+        condition: service_healthy
+        restart: true
     networks:
       - app-tier
     build:
@@ -14,20 +18,31 @@ services:
       - 8088:8088
       - 8091:8080
     volumes:
+      - ../files/src/media/:/var/www/html/media/
       - ../files/config/nginx/index.html:/usr/share/nginx/html/index.html
       - ../files/config/nginx/stat.xsl:/var/www/html/rtmp/stat.xsl
       - ../files/config/nginx/nginx.conf:/etc/nginx/nginx.conf
       - ../files/config/nginx/rtmp:/etc/nginx/sites-available/rtmp
   fpm:
-      image: php:fpm
+      build:
+        context: ./
+        dockerfile: dockerfile.fpm
       container_name: fpm
       networks:
       - app-tier
       ports:
           - ":9000"
       volumes:
+        - ../files/src/media/:/media/
         - ../files/src/site/:/var/www/html/wordpress/
   auth_server:
+    environment:
+    - DEBUG=express:*
+    - NODE_DEBUG=cluster,net,http,fs,tls,module,timers
+    depends_on:
+      mysql:
+        condition: service_healthy
+        restart: true
     build:
       context: ./
       dockerfile: dockerfile.express
@@ -38,7 +53,29 @@ services:
       - "3000:3000"
     volumes:
       - ../files/src/express/:/usr/app/src
+  mysql:
+    environment:
+      MYSQL_ROOT_PASSWORD:  superrootpass
+      MYSQL_USER: secureuser
+      MYSQL_PASSWORD: securepass
+      MYSQL_DATABASE: spasm
+    container_name: mysql
+    image: mysql:8.1
+    networks:
+    - app-tier
+    ports:
+      - "3307:3306"
+    volumes:
+      - mysql_vol:/var/lib/sql
+      - "./config/db/init.sql:/docker-entrypoint-initdb.d/1.sql"
+    healthcheck:
+        test: mysql --user=root --password=superrootpass --execute="SHOW DATABASES";
+        interval: 5s
+        retries: 15
+        timeout: 10s
 
+volumes:
+  mysql_vol:
 networks:
   app-tier:
     driver: bridge
